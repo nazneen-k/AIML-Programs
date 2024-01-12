@@ -1,0 +1,56 @@
+import math
+import pandas as pd
+import numpy as np
+from sklearn import datasets
+
+def calculate_distance(trained_data, test_data):
+ distance = 0.0
+ for i in range(len(trained_data)-1):
+    distance += (float(test_data[i]) - float(trained_data[i]))**2
+ return math.sqrt(distance)
+
+
+def get_k_neighbours(trained_dataset, test_data, k_neighbours):
+    distances = []
+    for train_data in trained_dataset:
+        dist = calculate_distance ( train_data, test_data )
+        distances.append ( (train_data, dist) )
+    distances.sort ( key=lambda tup: tup[1] )
+
+    neighbours = []
+    for i in range ( k_neighbours ):
+        neighbours.append ( distances[i][0] )
+    return neighbours
+
+def predict(trained_dataset, test_data, k_neighbours):
+ neighbours = get_k_neighbours(trained_dataset, test_data, k_neighbours)
+ output_values = [row[-1] for row in neighbours]
+ prediction = max(set(output_values), key=output_values.count)
+ return prediction
+
+def k_nearest_neighbors(train, test, k_neighbours):
+ preds = []
+ for instance in test:
+     output = predict(train, instance, k_neighbours)
+     preds.append(output)
+ return(preds)
+
+iris = datasets.load_iris()
+df = pd.DataFrame(iris.data, columns = ['sl','sw','pl','pw'])
+df['target'] = iris.target
+df = df.sample(frac = 1)
+dataset = np.array(df)
+
+trained_data = dataset[:121]
+test_data = dataset[121:]
+pred = k_nearest_neighbors(trained_data, test_data, 5)
+print(pred)
+
+crt = 0
+total = len ( test_data )
+for i in range ( total ):
+    if test_data[i][-1] == pred[i]:
+        crt += 1
+
+accuracy = crt / total * 100
+print ( "Accuracy : ", accuracy )

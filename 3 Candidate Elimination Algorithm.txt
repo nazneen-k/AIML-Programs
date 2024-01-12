@@ -1,0 +1,99 @@
+import csv
+def loadCsv(filename):
+    lines=csv.reader(open(filename,"rt"))
+    dataset=list(lines)
+    return dataset
+dataset=loadCsv("swimming.csv")
+attribute=dataset[0][:-1]
+specific=dataset[1][:-1]
+general=[['?' for i in range(len(specific))] for j in range(len(specific))]
+
+step_no=1
+for data in dataset:
+    if data[-1]=="yes":
+        for j in range(len(specific)):
+            if data[j]!=specific[j]:
+                specific[j]="?"
+                general[j][j]="?"
+
+    elif data[-1]=="no":
+        for j in range(len(specific)):
+            if data[j]!=specific[j]:
+                general[j][j]=specific[j]
+            else:
+                general[j][j]="?"
+
+    # print("\nStep",step_no,"of candidate Elimination Algorithm")
+    # print(specific)
+    # print(general)
+    step_no+=1
+
+gen_hypothesis=[]
+for hypothesis in general:
+    for val in hypothesis:
+        if val!='?':
+            gen_hypothesis.append(hypothesis)
+            break
+
+# print("\nFinial Specific hypothesis:\n",specific)
+# print("\nFinial General hypothesis:\n",gen_hypothesis)
+
+final_hypothesis=[]
+final_hypothesis.append(specific)
+for h in gen_hypothesis:
+    final_hypothesis.append(h)
+    new_h=h.copy();
+    for i in range(len(specific)):
+        if new_h[i]!=specific[i]:
+            new_h[i]=specific[i]
+            if new_h not in final_hypothesis:
+                final_hypothesis.append(new_h.copy())
+            new_h[i]='?'
+# print(final_hypothesis)
+final_hypothesis
+
+test_data=[]
+for i in range(len(specific)):
+    print("enter value for",attribute[i],end=":")
+    value=input()
+    test_data.append(value)
+# print("Test data is",test_data)
+
+positive_count=0
+negative_count=0
+
+for hypothesis in final_hypothesis:
+    isPositive=True
+    for i in range(len(hypothesis)):
+        if hypothesis[i]==test_data[i] or hypothesis[i]=='?':
+            continue
+        isPositive=False
+        break
+    if isPositive:
+        positive_count+=1
+    else:
+        negative_count+=1
+
+print("positive=",positive_count)
+print("negative=",negative_count)
+
+if positive_count>=negative_count:
+    print("Yes,enjoys swimming")
+else:
+    print ( "No,do not enjoys swimming" )
+
+
+
+
+
+
+
+
+
+
+
+Sky, Temperature, Humidity, Wind, Water, Forecast, Output
+sunny, warm, normal, strong, warm, same, yes
+sunny, warm, hot, strong, warm, same, yes
+rainy, cold, hot,strong, warm, change, no
+sunny, warm, hot, strong, cold, change, yes

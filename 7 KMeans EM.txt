@@ -1,0 +1,87 @@
+import numpy as np
+from sklearn.cluster import KMeans
+import matplotlib.pyplot as plt
+from sklearn.mixture import GaussianMixture
+import pandas as pd
+
+x = pd.read_csv("kmeans.csv")
+x1 = x['age'].values
+x2 = x['income'].values
+x = np.array(list(zip(x1,x2))).reshape(len(x1),2)
+
+plt.plot()
+plt.xlim([0,100])
+plt.ylim([0,60000])
+plt.title('Dataset')
+plt.scatter(x1,x2,s=100)
+plt.show()
+
+
+
+
+
+# EM Algo
+gmm = GaussianMixture(n_components=3)
+gmm.fit(x)
+em_predictions = gmm.predict(x)
+print("EM predictions",em_predictions)
+print("mean :",gmm.means_)
+print("covariance :",gmm.covariances_)
+
+
+
+plt.title("Expectation Maximum")
+plt.scatter(x[:,0],x[:,1],c=em_predictions,s=100)
+plt.show()
+
+
+# K-Means
+import matplotlib.pyplot as plt1
+kmeans = KMeans(n_clusters=4)
+kmeans.fit(x)
+print("K-Means")
+print(kmeans.cluster_centers_)
+print(kmeans.labels_)
+
+
+plt.title("KMeans")
+plt1.scatter(x[:,0],x[:,1], c=kmeans.labels_, s=100)
+
+
+plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], color='black', s=100)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+age,income
+20, 1000
+32, 34000
+89, 3055
+56, 8700
+26, 9800
+12, 503
+5, 600
+16, 2000
+35, 300
+32, 9000
+45, 6000
+60, 468
+44, 235
+53, 20000
+64, 54000
+40, 26500
+50, 38600
+77, 3000
+69, 5400
+
