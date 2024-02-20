@@ -89,8 +89,7 @@ else:
 
 
 
-
-
+Dataset:
 
 Sky, Temperature, Humidity, Wind, Water, Forecast, Output
 sunny, warm, normal, strong, warm, same, yes
