@@ -55,13 +55,7 @@ plt.scatter(kmeans.cluster_centers_[:, 0], kmeans.cluster_centers_[:, 1], color=
 
 
 
-
-
-
-
-
-
-
+Dataset:
 
 
 age,income
@@ -84,4 +78,3 @@ age,income
 50, 38600
 77, 3000
 69, 5400
-
