@@ -94,7 +94,7 @@ df_tennis[['PlayTennis', 'predicted']]
 
 
 
-
+Dataset:
 
 
 Outlook,Temperature,Humidity,Wind,PlayTennis
@@ -112,8 +112,3 @@ sunny,mild,normal,strong,yes
 overcast,mild,high,strong,yes
 overcast,hot,normal,weak,yes
 rain,mild,high,strong,no
-
-
-
-
-
